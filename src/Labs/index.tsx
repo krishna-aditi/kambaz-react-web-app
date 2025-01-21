@@ -14,7 +14,7 @@ export default function Labs() {
       <br/>
       Semester: <b>Spring 2025</b>
       <br/>
-      Please <a href = "https://github.com/krishna-aditi/kambaz-react-web-app"> click here </a> for Aditi Krishna's GitHub repository.
+      Please <a href = "https://github.com/krishna-aditi/kambaz-react-web-app"> click here </a> for Aditi Krishna's Kambaz GitHub repository.
       <TOC />
       <Routes>
         <Route path="/" element={<Navigate to="Lab1" />} />
