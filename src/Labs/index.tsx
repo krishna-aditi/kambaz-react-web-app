@@ -14,9 +14,10 @@ export default function Labs() {
       <br/>
       Semester: <b>Spring 2025</b>
       <br/>
-      Please <a href = "https://github.com/krishna-aditi/kambaz-react-web-app"> click here </a> for Aditi Krishna's Kambaz GitHub repository.
+      Github Repository: <a href = "https://github.com/krishna-aditi/kambaz-react-web-app">https://github.com/krishna-aditi/kambaz-react-web-app</a> 
       <br/>
-      Link to Kambaz Web App: https://a1--kambaz-react-web-app-aditikrishna.netlify.app/#/Labs/Lab1
+      Link to Kambaz Web App on Netlify: <a href="https://a1--kambaz-react-web-app-aditikrishna.netlify.app">https://a1--kambaz-react-web-app-aditikrishna.netlify.app</a>
+      <br/>
       <TOC />
       <Routes>
         <Route path="/" element={<Navigate to="Lab1" />} />
