@@ -19,7 +19,6 @@ export default function AssignmentEditor() {
                 </tr>
                 {/* Complete on your own */}
                 <br/>
-                
                 <tr>
                     <td align="right" valign="top">
                         <label htmlFor="wd-group">Assignment Group</label>
@@ -125,7 +124,6 @@ export default function AssignmentEditor() {
                 </tr>
             </table>
             <hr/>
-            
             <table width="100%">
                 <tr>
                     <td align="right">
@@ -134,6 +132,5 @@ export default function AssignmentEditor() {
                     </td>
                 </tr>
             </table>
-
         </div>
 );}

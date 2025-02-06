@@ -1,5 +1,4 @@
 import { ListGroup } from "react-bootstrap";
-import { Link } from "react-router";
 import AssignmentControls from "./AssignmentsControls";
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import { BsGripVertical } from "react-icons/bs";
@@ -32,7 +31,7 @@ export default function Assignments() {
                         ASSIGNMENTS
                         </div>
                         <div className="d-flex align-items-center">
-                        <span className="bg-gray rounded-pill">40% of Total</span>
+                        <span className="bg-gray rounded-pill border">40% of Total</span>
                         <AssignmentControlButtons />
                         </div>
                     </div>
@@ -40,7 +39,7 @@ export default function Assignments() {
 
                 <ListGroup.Item className="wd-assignment p-3 ps-1">
                 {/* Complete On Your Own */}
-                    <Link to="#/Kambaz/Courses/1234/Assignments/124"
+                    <a id="wd-assignment-link" href="#/Kambaz/Courses/1234/Assignments/124"
                         className="wd-assignment-link text-black text-decoration-none">
                         <BsGripVertical className="me-2 fs-3" />
                         <span className="wd-fg-color-green">
@@ -50,12 +49,12 @@ export default function Assignments() {
                         <br/>
                         <span className="wd-fg-color-red"> Multiple Modules </span> | <b> Not available until</b> May 6 at 12:00am | Due May 13 at 11:59pm | 100 pts
                         <LessonControlButtons/>
-                    </Link>
+                    </a>
                 </ListGroup.Item>
 
                 <ListGroup.Item className="wd-assignment p-3 ps-1">
                 {/* Complete On Your Own */}
-                    <Link to="#/Kambaz/Courses/1234/Assignments/124"
+                    <a id="wd-assignment-link" href="#/Kambaz/Courses/1234/Assignments/124"
                         className="wd-assignment-link text-black text-decoration-none">
                         <BsGripVertical className="me-2 fs-3" />
                         <span className="wd-fg-color-green">
@@ -65,18 +64,18 @@ export default function Assignments() {
                         <br/>
                         <span className="wd-fg-color-red">Multiple Modules </span> | <b>Not available until</b> May 13 at 12:00am | <b>Due</b> May 20 at 11:59pm | 100 pts
                         <LessonControlButtons/>
-                    </Link>
+                    </a>
                 </ListGroup.Item>
                 <ListGroup.Item className="wd-assignment p-3 ps-1">
-                    <Link to="#/Kambaz/Courses/1234/Assignments/125"
-                    className="wd-assignment-link text-black text-decoration-none">
-                    <BsGripVertical className="me-2 fs-3" />
-                    <PiNotePencilDuotone className="wd-fg-color-green me-2 fs-3" />
-                    <b>A3 - JAVASCRIPT + REACT</b>
-                    <br/>
-                    <span className="wd-fg-color-red">Multiple Modules</span> | <b>Not available until</b> May 20 at 12:00am | <b>Due</b> May 27 at 11:59pm | 100 pts
-                    <LessonControlButtons/>
-                </Link>
+                    <a id="wd-assignment-link" href="#/Kambaz/Courses/1234/Assignments/124"
+                        className="wd-assignment-link text-black text-decoration-none">
+                        <BsGripVertical className="me-2 fs-3" />
+                        <PiNotePencilDuotone className="wd-fg-color-green me-2 fs-3" />
+                        <b>A3 - JAVASCRIPT + REACT</b>
+                        <br/>
+                        <span className="wd-fg-color-red">Multiple Modules</span> | <b>Not available until</b> May 20 at 12:00am | <b>Due</b> May 27 at 11:59pm | 100 pts
+                        <LessonControlButtons/>
+                    </a>
             </ListGroup.Item>
             </ListGroup>
       </div>
