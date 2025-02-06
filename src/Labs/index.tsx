@@ -19,6 +19,7 @@ export default function Labs() {
       Link to Kambaz Web App on Netlify: <a href="https://a1--kambaz-react-web-app-aditikrishna.netlify.app">https://a1--kambaz-react-web-app-aditikrishna.netlify.app</a>
       <br/>
       <TOC />
+      <br/>
       <Routes>
         <Route path="/" element={<Navigate to="Lab1" />} />
         <Route path="Lab1" element={<Lab1 />} />
