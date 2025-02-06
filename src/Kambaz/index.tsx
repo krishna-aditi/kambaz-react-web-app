@@ -18,7 +18,6 @@ export default function Kambaz() {
                     <Route path="/Courses/:cid/*" element={<Courses />} />
                     <Route path="/Calendar" element={<h1>Calendar</h1>} />
                     <Route path="/Inbox" element={<h1>Inbox</h1>} />
-                    <Route path="People" element={<PeopleTable />} />
                 </Routes>
             </div>
         </div>

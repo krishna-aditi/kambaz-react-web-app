@@ -1,5 +1,4 @@
 import { FaPlus } from "react-icons/fa6";
-import { AiOutlineStop } from "react-icons/ai";
 import GreenCheckmark from "./GreenCheckmark";
 import { Button, Dropdown } from "react-bootstrap";
 import { MdDoNotDisturbAlt } from "react-icons/md";

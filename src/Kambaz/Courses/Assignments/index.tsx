@@ -2,7 +2,7 @@ import { ListGroup } from "react-bootstrap";
 import { Link } from "react-router";
 import AssignmentControls from "./AssignmentsControls";
 import AssignmentControlButtons from "./AssignmentControlButtons";
-import { BsGrid3X3GapFill, BsGripVertical } from "react-icons/bs";
+import { BsGripVertical } from "react-icons/bs";
 import { GoTriangleDown } from "react-icons/go";
 import LessonControlButtons from "./LessonControlButtons";
 import { PiNotePencilDuotone } from "react-icons/pi";
