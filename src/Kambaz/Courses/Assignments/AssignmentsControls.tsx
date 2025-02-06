@@ -1,5 +1,4 @@
 import { Button, FormControl, InputGroup } from "react-bootstrap";
-import { CiSearch } from "react-icons/ci";
 import { FaPlus, FaSearch } from "react-icons/fa";
 export default function AssignmentControls() {
     return (
