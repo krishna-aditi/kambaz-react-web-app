@@ -9,7 +9,7 @@ export default function Account() {
     <div id="wd-account-screen d-none d-md-block">
         <h2>Account</h2>
         <div className="d-flex">
-            <div className="d-none d-md-block">
+            <div className="d-none d-md-block pe-4">
                 <AccountNavigation />
             </div>
             <div>
