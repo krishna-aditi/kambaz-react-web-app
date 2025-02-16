@@ -14,7 +14,7 @@ export default function Signin() {
       {/* <Link  to="/Kambaz/Dashboard" id="wd-signin-btn"> Sign in </Link> <br />
       <Link  to="/Kambaz/Account/Signup"  id="wd-signup-link">Sign up</Link> */}
       <Link id="wd-signin-btn"
-            to="/Kambaz/Account/Profile"
+            to="/Kambaz/Dashboard"
             className="btn btn-primary w-100 mb-2">
             Sign in </Link><br />
       <Link id="wd-signup-link" to="/Kambaz/Account/Signup">Sign up</Link>
