@@ -46,8 +46,7 @@ export default function Assignments() {
                                         </a>
                                         <p className="fs-6 mb-0">
                                             <span className="text-danger"> Multiple Modules </span> | 
-                                            <b> Not available until</b> {assignment.availabledate.split("T")[0]} at {assignment.availabledate.split("T")[1]} | <b>Due</b> {assignment.duedate.split("T")[0]} 
-                                            at {assignment.duedate.split("T")[1]} | {assignment.points} pts
+                                            <b> Not available until</b> {assignment.availabledate.split("T")[0]} at {assignment.availabledate.split("T")[1]} | <b>Due</b> {assignment.duedate.split("T")[0]} at {assignment.duedate.split("T")[1]} | {assignment.points} pts
                                         </p>
                                     </Col>
                                     <Col>
