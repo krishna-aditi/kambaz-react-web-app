@@ -5,7 +5,7 @@ export default function ArrayStateVariable() {
         setArray([...array, Math.floor(Math.random() * 100)]);
     };
     const deleteElement = (index: number) => {
-        setArray(array.filter((item, i) => i !== index)); // create a subset of the array by filtering for items whose index is !== i -----> so if index === 0 then array becomes [2, 3, 4, 5]
+        setArray(array.filter((_, i) => i !== index)); // create a subset of the array by filtering for items whose index is !== i -----> so if index === 0 then array becomes [2, 3, 4, 5]
     };
     return (
         <div id="wd-array-state-variables">
