@@ -31,19 +31,19 @@ export default function AssignmentEditor() {
                 <label htmlFor="wd-name" className="form-label">
                     Assignment Name</label>
                 <input className="form-control"
-                    id="wd-name" defaultValue={assignment.title}
+                    id="wd-name" defaultValue={assignment ? assignment.title : "Assignment Title"}
                     onChange={(e) => { setAssignment({...assignment, title: e.target.value });}} />
             </div>
             
             <textarea className="form-control mb-3" id="wd-description" cols={50} rows ={10}>
-                {assignment.description}
+                {assignment ? assignment.description : "Assignment Description"}
             </textarea>
 
             <Form>
                 <Form.Group className="row mb-3">
                     <Form.Label column sm ={4} className="text-end">Points</Form.Label>
                     <Col sm={8}>
-                        <Form.Control id="wd-points" defaultValue={assignment.points}
+                        <Form.Control id="wd-points" value={assignment ? assignment.points : 100}
                             onChange={(e) => { setAssignment({...assignment, points: parseInt(e.target.value) })}}/>
                     </Col>
                 </Form.Group>
@@ -116,7 +116,7 @@ export default function AssignmentEditor() {
                         if (isNewAssignment) {
                             dispatch(addAssignment(assignment));
                         } 
-                        else {
+                        else if (existingAssignment){
                             dispatch(updateAssignment(assignment));
                         }
                     }}>

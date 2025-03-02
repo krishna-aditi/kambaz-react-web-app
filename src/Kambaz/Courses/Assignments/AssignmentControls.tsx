@@ -3,6 +3,7 @@ import GreenCheckmark from "./GreenCheckmark";
 import { FaTrash } from "react-icons/fa";
 import { useState } from "react";
 import DeleteDialog from "./DeleteDialog";
+import FacultyProtectedRoute from "../../Account/FacultyProtectedRoute";
 
 export default function AssignmentControls(
   { assignmentId, assignmentTitle, deleteAssignment }: {
@@ -27,10 +28,13 @@ export default function AssignmentControls(
   return (
     <div className="float-end d-flex align-items-center ms-2">
       {/* <FaTrash className="text-danger me-2 mb-1" onClick={() => deleteAssignment(assignmentId)}/> */}
-      <FaTrash 
-        className="text-danger me-2 mb-1" 
-        onClick={handleDeleteClick}
-      />
+      <FacultyProtectedRoute>
+        <FaTrash 
+          className="text-danger me-2 mb-1" 
+          onClick={handleDeleteClick}
+        />
+      </FacultyProtectedRoute>
+      
       <GreenCheckmark />
       <IoEllipsisVertical className="fs-4" />
 

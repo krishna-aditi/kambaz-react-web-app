@@ -9,7 +9,6 @@ import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAssignment } from "./reducer";
 
-
 export default function Assignments() {
     const { cid } = useParams();
     // const assignments = db.assignments;
