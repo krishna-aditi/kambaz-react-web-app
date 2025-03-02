@@ -3,28 +3,48 @@ import { Form} from "react-bootstrap";
 import { useParams } from "react-router";
 import {assignments} from "../../Database";
 import { Link } from "react-router-dom";
+import { addAssignment, updateAssignment } from "./reducer";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+
 
 export default function AssignmentEditor() {
     const { cid, aid } = useParams();
-    const assignment = assignments.find((assignment) => assignment._id === aid);
+    const dispatch = useDispatch();
+    const existingAssignment = assignments.find((assignment: any) => assignment._id === aid);
+    const isNewAssignment = !existingAssignment; 
+
+    const [assignment, setAssignment] = useState(existingAssignment || { // if assignment is not found, create a new assignment
+        _id: uuidv4(),
+        title: "Assignment Title",
+        course: cid,
+        description: "Assignment Description",
+        points: 0,
+        duedate: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split(".")[0],
+        availabledate: new Date().toISOString().split(".")[0],
+    });
+
     return (
         <div id="wd-assignments-editor" className="ms-5 me-5">
             <div className="mb-3">
                 <label htmlFor="wd-name" className="form-label">
                     Assignment Name</label>
                 <input className="form-control"
-                    id="wd-name" value={assignment?.title} />
+                    id="wd-name" defaultValue={assignment.title}
+                    onChange={(e) => { setAssignment({...assignment, title: e.target.value });}} />
             </div>
             
             <textarea className="form-control mb-3" id="wd-description" cols={50} rows ={10}>
-                {assignment?.description}
+                {assignment.description}
             </textarea>
 
             <Form>
                 <Form.Group className="row mb-3">
                     <Form.Label column sm ={4} className="text-end">Points</Form.Label>
                     <Col sm={8}>
-                        <Form.Control id="wd-points" value={assignment?.points} />
+                        <Form.Control id="wd-points" defaultValue={assignment.points}
+                            onChange={(e) => { setAssignment({...assignment, points: parseInt(e.target.value) })}}/>
                     </Col>
                 </Form.Group>
 
@@ -68,16 +88,19 @@ export default function AssignmentEditor() {
                         <Form.Control className="mb-3" id="wd-assign-to" type="text" value="Everyone" multiple/>
                         
                         <Form.Label className="fw-bold">Due</Form.Label>
-                        <Form.Control className="mb-3" id="wd-due-date" type="datetime-local" value={assignment?.duedate}/>
+                        <Form.Control className="mb-3" id="wd-due-date" type="datetime-local" defaultValue={assignment?.duedate}
+                            onChange={(e) => { setAssignment({...assignment, duedate: e.target.value })}}/>
 
                         <div className="d-flex">
                             <div className="flex-fill me-1" style={{ minWidth: 0 }}>
                             <Form.Label className="fw-bold mb-1 me-1">Available from</Form.Label>
-                            <Form.Control className="mb-3 " id="wd-available-from" type="datetime-local" value={assignment?.availabledate}/>
+                            <Form.Control className="mb-3 " id="wd-available-from" type="datetime-local" defaultValue={assignment?.availabledate}
+                                onChange={(e) => { setAssignment({...assignment, availabledate: e.target.value })}}/>
                             </div>
                             <div className="flex-fill" style={{ minWidth: 0 }}>
                             <Form.Label className="fw-bold mb-1">Until</Form.Label>
-                            <Form.Control className="mb-3" id="wd-available-until" type="datetime-local" value={assignment?.duedate}/>
+                            <Form.Control className="mb-3" id="wd-available-until" type="datetime-local" defaultValue={assignment?.duedate}
+                                onChange={(e) => { setAssignment({...assignment, duedate: e.target.value })}} />
                             </div>
                         </div>
                     </div>
@@ -88,7 +111,15 @@ export default function AssignmentEditor() {
             <div className="float-end">
                 <Link className="btn btn-md btn-danger me-2 float-end" 
                     to={`/Kambaz/Courses/${cid}/Assignments`}
-                    id="wd-save-btn">
+                    id="wd-save-btn"
+                    onClick={() => {
+                        if (isNewAssignment) {
+                            dispatch(addAssignment(assignment));
+                        } 
+                        else {
+                            dispatch(updateAssignment(assignment));
+                        }
+                    }}>
                     Save
                 </Link>
                 <Link className="btn btn-md btn-secondary me-2 float-end" 

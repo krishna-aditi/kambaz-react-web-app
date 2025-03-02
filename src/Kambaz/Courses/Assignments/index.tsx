@@ -2,15 +2,20 @@ import { Col, ListGroup, Row } from "react-bootstrap";
 import AssignmentControlButtons from "./AssignmentControlButtons";
 import { BsGripVertical } from "react-icons/bs";
 import { GoTriangleDown } from "react-icons/go";
-import LessonControlButtons from "./AssignmentControls";
+import AssignmentControls from "./AssignmentControls";
 import { TbFilePencil } from "react-icons/tb";
 import AssignmentPageControls from "./AssignmentPageControls";
 import { useParams } from "react-router";
-import * as db from "../../Database";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteAssignment } from "./reducer";
+
 
 export default function Assignments() {
     const { cid } = useParams();
-    const assignments = db.assignments;
+    // const assignments = db.assignments;
+    const { assignments } = useSelector((state: any) => state.assignmentReducer);
+    const dispatch = useDispatch();
+    
     return (
         <div id="wd-assignments">
 
@@ -50,7 +55,11 @@ export default function Assignments() {
                                         </p>
                                     </Col>
                                     <Col>
-                                        <LessonControlButtons/>
+                                        <AssignmentControls assignmentId={assignment._id}
+                                            assignmentTitle={assignment.title}
+                                            deleteAssignment={(assignmentId) => {
+                                            dispatch(deleteAssignment(assignmentId));
+                                            }} />
                                     </Col>
                                 </Row>
                             </ListGroup.Item>

@@ -6,11 +6,13 @@ import { BsBell } from "react-icons/bs";
 import { Button } from "react-bootstrap";
 import { AiOutlineAim } from "react-icons/ai";
 import { TbSpeakerphone } from "react-icons/tb";
+import FacultyProtectedRoute from "../../Account/FacultyProtectedRoute";
 
 export default function CourseStatus() {
     return (
         <div id="wd-course-status" style={{ width: "350px" }}>
             <h2>Course Status</h2>
+            <FacultyProtectedRoute>
             <div className="d-flex">
                 <div className="w-50 pe-1">
                     <Button variant="secondary" size="lg" className="w-100 text-nowrap ">
@@ -25,8 +27,8 @@ export default function CourseStatus() {
                     </Button>
                 </div>
             </div>
-
             <br />
+            </FacultyProtectedRoute>
 
             <Button variant="secondary" size="lg" className="w-100 mt-1 text-start">
                 <BiImport className="me-2 fs-5" />
