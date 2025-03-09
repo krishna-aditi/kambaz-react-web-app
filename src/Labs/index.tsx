@@ -20,7 +20,7 @@ export default function Labs() {
         <br/>
         Github Repository: <a href = "https://github.com/krishna-aditi/kambaz-react-web-app">https://github.com/krishna-aditi/kambaz-react-web-app</a> 
         <br/>
-        Link to Kambaz Web App on Netlify Assignment-3: <a href="https://a3--kambaz-react-web-app-aditikrishna.netlify.app">https://a3--kambaz-react-web-app-aditikrishna.netlify.app</a>
+        Link to Kambaz Web App on Netlify Assignment-4: <a href="https://a4--kambaz-react-web-app-aditikrishna.netlify.app">https://a4--kambaz-react-web-app-aditikrishna.netlify.app</a>
         <br/>
         <TOC />
         <br/>
