@@ -1,10 +1,11 @@
 import { Row, Col, Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import FacultyProtectedRoute from "../Account/FacultyProtectedRoute";
 import StudentProtectedRoute from "../Account/StudentProtectedRoute";
-import { addEnrollment, deleteEnrollment } from "../Enrollments/reducer";
-import { useState } from "react";
+import { setEnrollments, setShowEnrolledOnly, addEnrollment, deleteEnrollment } from "../Enrollments/reducer";
+import * as enrollmentsClient from "../Enrollments/client";
 
 export default function Dashboard(   
     { courses, course, setCourse, addNewCourse, deleteCourse, updateCourse }: 
@@ -17,12 +18,21 @@ export default function Dashboard(
     })
     {
     const { currentUser } = useSelector((state: any) => state.accountReducer);
-    const { enrollments } = useSelector((state: any) => state.enrollmentReducer);
+    const { enrollments, showEnrolledOnly } = useSelector((state: any) => state.enrollmentReducer);
     const dispatch = useDispatch();
+    
+    // Fetch enrollments for current user from server and set them in the store
+    const fetchEnrollments = async () => { 
+        const enrollments = await enrollmentsClient.findEnrollments(currentUser._id as string);
+        dispatch(setEnrollments(enrollments));
+    };
+    useEffect(() => {
+        fetchEnrollments();
+    }, [currentUser]);
 
     // State variable indicating if only enrolled courses are shown
     // Initial state of showEnrolledOnly is false --> must show all published courses in the beginning
-    const [showEnrolledOnly, setShowEnrolledOnly] = useState(false);
+    // const [showEnrolledOnly, setShowEnrolledOnly] = useState(false);
     // Show enrolled courses when toggled 
     const toggleEnrollmentView = () => { setShowEnrolledOnly(!showEnrolledOnly); };  
 
@@ -34,22 +44,54 @@ export default function Dashboard(
     //     "course789": true     // user is enrolled in this course
     //     ...
     // }
-    const [enrollmentStatus, setEnrollmentStatus] = useState( 
-        courses.reduce((status, course) => { status[course._id] = enrollments.some( (enrollment: any) => enrollment.user === currentUser._id && enrollment.course === course._id );
-            return status; }, {})
+    // const [enrollmentStatus, setEnrollmentStatus] = useState( 
+    //     courses.reduce((status, course) => { 
+    //         status[course._id] = enrollments.some( 
+    //             (enrollment: any) => 
+    //                 enrollment.user === currentUser._id && enrollment.course === course._id 
+    //         );
+    //         return status; 
+    //     }, {})
+    // );
+
+    // Calculate enrollment status for each course
+    const enrollmentStatus = courses.reduce((status, course) => { 
+        status[course._id] = enrollments.some(
+            (enrollment: any) =>
+                enrollment.user === currentUser._id && enrollment.course === course._id
+        );
+        return status;
+        }, {}
     );
 
+    // Add / Enroll user to course
+    const handleAddEnrollment = async (courseId: any) => {
+        await enrollmentsClient.enrollUser(currentUser._id, courseId); 
+        dispatch(addEnrollment({ user: currentUser._id, course: courseId })); 
+        fetchEnrollments();
+    }
+    
+    // Delete / Unenroll user to course
+    const handleDeleteEnrollment = async (courseId: any) => {
+        await enrollmentsClient.unenrollUser(currentUser._id, courseId);
+        dispatch(deleteEnrollment({ user: currentUser._id, course: courseId })); 
+        fetchEnrollments();
+      }
+
     // Toggle enrollment of a course
-    const toggleEnrollment = (courseId: any) => { const isEnrolled = enrollmentStatus[courseId];
-        if (isEnrolled) {
-            dispatch(deleteEnrollment({ user: currentUser._id, course: courseId }));
-        } 
-        else {
-            dispatch(addEnrollment({ user: currentUser._id, course: courseId }));
-        }
+    const toggleEnrollment = (courseId: any) => {
+        const isEnrolled = enrollmentStatus[courseId];
+            if (isEnrolled) {
+                handleDeleteEnrollment(courseId);
+                // dispatch(deleteEnrollment({ user: currentUser._id, course: courseId }));
+            } 
+            else {
+                handleAddEnrollment(courseId);
+                // dispatch(addEnrollment({ user: currentUser._id, course: courseId }));
+            }
         // if isEntrolled is true and user clicks on unenroll --> isEnrolled turns false and enrollmentStatus of the course is updated 
         // if isEntrolled is false and user clicks on enroll --> isEnrolled turns true and enrollmentStatus of the course is updated
-        setEnrollmentStatus({...enrollmentStatus, [courseId]: !isEnrolled,});
+        // setEnrollmentStatus({...enrollmentStatus, [courseId]: !isEnrolled,});
     };
 
     return (
@@ -100,19 +142,20 @@ export default function Dashboard(
                     {/* showEnrolledOnly = False --> means show all published courses --> all courses pass through the filter without checking enrollmentStatus */}
                     {/* showEnrolledOnly = True --> means show enrolled courses ONLY --> filter courses where the current user is enrolled */}
                     {courses
-                    .filter((course) => !showEnrolledOnly ||
-                        enrollments.some( 
-                            (enrollment: any) =>
-                                enrollment.user === currentUser._id &&
-                                enrollment.course === course._id
-                        )
-                    )                
+                    // .filter((course) => !showEnrolledOnly ||
+                    //     enrollments.some( 
+                    //         (enrollment: any) =>
+                    //             enrollment.user === currentUser._id &&
+                    //             enrollment.course === course._id
+                    //     )
+                    // )                
                     .map((course) => (
                         <Col className="wd-dashboard-course" style={{ width: "300px" }}>
                         <Card>
                             <Link to={enrollmentStatus[course._id] ? `/Kambaz/Courses/${course._id}/Home`: "#"} // navigate to course only when enrolled
                                 className="wd-dashboard-course-link text-decoration-none text-dark" >
                             <Card.Img src="/images/reactjs.jpg" variant="top" width="100%" height={160} />
+                            
                             <Card.Body className="card-body">
                                 <Card.Title className="wd-dashboard-course-title text-nowrap overflow-hidden">
                                 {course.name} </Card.Title>
