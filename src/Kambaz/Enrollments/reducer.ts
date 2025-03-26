@@ -3,8 +3,8 @@ import { enrollments } from "../Database";
 import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
-    enrollments: enrollments,
-    showEnrolledOnly: false,
+    enrollments: [],
+    showEnrolledOnly: true
 };
 const enrollmentsSlice = createSlice({
     name: "enrollments",
@@ -24,9 +24,15 @@ const enrollmentsSlice = createSlice({
         };
         state.enrollments = [...state.enrollments, newEnrollment] as any;
     },
+    // deleteEnrollment: (state, { payload: enrollment }) => {
+    //     state.enrollments = state.enrollments.filter(
+    //         (e: any) => e.user !== enrollment.user && e.course !== enrollment.course);
+    // }
     deleteEnrollment: (state, { payload: enrollment }) => {
+        // Fix the deletion logic - only filter out the exact match
         state.enrollments = state.enrollments.filter(
-            (e: any) => e._user !== enrollment.user && e.course !== enrollment.course);
+            (e: any) => !(e.user === enrollment.user && e.course === enrollment.course)
+        );
     }
   },
 });
