@@ -23,6 +23,9 @@ export default function Dashboard(
     const dispatch = useDispatch();
     // new
     const [allCourses, setAllCourses] = useState(courses);
+
+    // isFaculty check
+    const isFaculty = currentUser && currentUser.role === "FACULTY";
     
     // Fetch enrollments for current user from server and set them in the store
     // const fetchEnrollments = async () => { 
@@ -112,12 +115,27 @@ export default function Dashboard(
     // );
 
     // new
-    const displayedCourses = showEnrolledOnly ?
-        allCourses.filter(course =>
-            enrollments.some((enrollment: any) => 
-                enrollment.user === currentUser._id && enrollment.course === course._id)
-        ) 
-        : allCourses;
+    // const displayedCourses = showEnrolledOnly ?
+    //     allCourses.filter(course =>
+    //         enrollments.some((enrollment: any) => 
+    //             enrollment.user === currentUser._id && enrollment.course === course._id)
+    //     ) 
+    //     : allCourses;
+
+    const displayedCourses = () =>{
+        if (isFaculty){
+            return allCourses;
+        }
+
+        if (showEnrolledOnly){
+            return allCourses.filter(course =>
+                    enrollments.some((enrollment: any) => 
+                        enrollment.user === currentUser._id && enrollment.course === course._id));
+        } else {
+            return allCourses;
+        }
+    };
+
 
     const enrollmentStatus = allCourses.reduce((status, course) => { 
         status[course._id] = Array.isArray(enrollments) && enrollments.some(
@@ -187,6 +205,8 @@ export default function Dashboard(
         }
     };
 
+    const coursesToDisplay = displayedCourses();
+
     return (
         <div id="wd-dashboard">
             <h1 id="wd-dashboard-title">Dashboard</h1> <hr />
@@ -226,9 +246,10 @@ export default function Dashboard(
             {/* <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2> <hr /> */}
 
             <h2 id="wd-dashboard-published">
-                { showEnrolledOnly ? 
-                `Enrolled Courses (${enrollments.filter((enrollment: any) => enrollment.user === currentUser._id).length})` 
-                : `Published Courses (${allCourses.length})`}
+                {isFaculty ? `Published Courses (${allCourses.length})` 
+                : (showEnrolledOnly 
+                    ? `Enrolled Courses (${enrollments.filter((enrollment: any) => enrollment.user === currentUser._id).length})` 
+                    : `Published Courses (${allCourses.length})`)}
             </h2>
             <hr />
 
@@ -244,7 +265,7 @@ export default function Dashboard(
                     //             enrollment.course === course._id
                     //     )
                     // ) */}
-                    {displayedCourses     
+                    {coursesToDisplay     
                     // .filter((course) => {
                     //     // If not showing enrolled only, show all courses
                     //     if (!showEnrolledOnly) {
