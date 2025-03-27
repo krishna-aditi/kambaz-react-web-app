@@ -7,13 +7,31 @@ import { TbFilePencil } from "react-icons/tb";
 import AssignmentPageControls from "./AssignmentPageControls";
 import { useParams } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteAssignment } from "./reducer";
+import { setAssignments, deleteAssignment } from "./reducer";
+import * as coursesClient from "../client"; 
+import * as assignmentsClient from "./client";
+import { useEffect } from "react";
 
 export default function Assignments() {
     const { cid } = useParams();
     // const assignments = db.assignments;
     const { assignments } = useSelector((state: any) => state.assignmentReducer);
     const dispatch = useDispatch();
+
+    // Retreive assignments for course
+    const fetchAssignments = async () => {
+        const assignments = await coursesClient.findAssignmentsForCourse(cid as string);
+        dispatch(setAssignments(assignments));
+    };
+    useEffect(() => {
+        fetchAssignments();
+    }, []);
+
+    // Delete assignments for course
+    const removeAssignment = async (assignmentId: string) => {
+        await assignmentsClient.deleteAssignment(assignmentId);
+        dispatch(deleteAssignment(assignmentId));
+    };
     
     return (
         <div id="wd-assignments">
@@ -33,7 +51,7 @@ export default function Assignments() {
                     </div>
 
                     {assignments
-                    .filter((assignment: any) => assignment.course === cid)
+                    // .filter((assignment: any) => assignment.course === cid)
                     .map((assignment: any) => (
                         <ListGroup className="wd-assignment-list rounded-0">
                             {/* A1 */}
@@ -56,9 +74,10 @@ export default function Assignments() {
                                     <Col>
                                         <AssignmentControls assignmentId={assignment._id}
                                             assignmentTitle={assignment.title}
-                                            deleteAssignment={(assignmentId) => {
-                                            dispatch(deleteAssignment(assignmentId));
-                                            }} />
+                                            deleteAssignment={
+                                                (assignmentId) => removeAssignment(assignmentId)
+                                                // {dispatch(deleteAssignment(assignmentId));}
+                                            } />
                                     </Col>
                                 </Row>
                             </ListGroup.Item>

@@ -21,24 +21,11 @@ export default function Dashboard(
     const { currentUser } = useSelector((state: any) => state.accountReducer);
     const { enrollments, showEnrolledOnly } = useSelector((state: any) => state.enrollmentReducer);
     const dispatch = useDispatch();
-    // new
     const [allCourses, setAllCourses] = useState(courses);
 
     // isFaculty check
     const isFaculty = currentUser && currentUser.role === "FACULTY";
     
-    // Fetch enrollments for current user from server and set them in the store
-    // const fetchEnrollments = async () => { 
-    //     const enrollments = await enrollmentsClient.findEnrollments(currentUser._id as string);
-    //     dispatch(setEnrollments(enrollments));
-    // };
-
-    // const fetchEnrollments = async () => { 
-    //     if (currentUser && currentUser._id) {
-    //         const enrollments = await enrollmentsClient.findEnrollments(currentUser._id);
-    //         dispatch(setEnrollments(enrollments));
-    //     }
-    // };
     const fetchEnrollments = async () => { 
         if (currentUser && currentUser._id) {
             try {
@@ -59,27 +46,15 @@ export default function Dashboard(
         }
     };
 
-    // useEffect(() => {
-    //     fetchEnrollments();
-    // }, [currentUser]);
-
     // Fetch enrollments when component mounts or currentUser changes
     useEffect(() => {
         fetchEnrollments();
     }, [currentUser]);
 
-    // new
-    // preload all courses when component mounts
+    // Pre-load all courses
     useEffect(() => {
         loadAllCourses();
     }, []);
-
-    // State variable indicating if only enrolled courses are shown
-    // Initial state of showEnrolledOnly is false --> must show all published courses in the beginning
-    // const [showEnrolledOnly, setShowEnrolledOnly] = useState(false);
-    
-    // Toggle between showing all courses or only enrolled courses
-    // const toggleEnrollmentView = () => { setShowEnrolledOnly(!showEnrolledOnly); };  
 
     // This stays the same but will start with showing enrolled only
     const toggleEnrollmentView = () => { 
@@ -94,33 +69,6 @@ export default function Dashboard(
     //     "course789": true     // user is enrolled in this course
     //     ...
     // }
-    // const [enrollmentStatus, setEnrollmentStatus] = useState( 
-    //     courses.reduce((status, course) => { 
-    //         status[course._id] = enrollments.some( 
-    //             (enrollment: any) => 
-    //                 enrollment.user === currentUser._id && enrollment.course === course._id 
-    //         );
-    //         return status; 
-    //     }, {})
-    // );
-
-    // Calculate enrollment status for each course
-    // const enrollmentStatus = courses.reduce((status, course) => { 
-    //     status[course._id] = enrollments.some(
-    //         (enrollment: any) =>
-    //             enrollment.user === currentUser._id && enrollment.course === course._id
-    //     );
-    //     return status;
-    //     }, {}
-    // );
-
-    // new
-    // const displayedCourses = showEnrolledOnly ?
-    //     allCourses.filter(course =>
-    //         enrollments.some((enrollment: any) => 
-    //             enrollment.user === currentUser._id && enrollment.course === course._id)
-    //     ) 
-    //     : allCourses;
 
     const displayedCourses = () =>{
         if (isFaculty){
@@ -136,7 +84,6 @@ export default function Dashboard(
         }
     };
 
-
     const enrollmentStatus = allCourses.reduce((status, course) => { 
         status[course._id] = Array.isArray(enrollments) && enrollments.some(
             (enrollment: any) =>
@@ -144,20 +91,6 @@ export default function Dashboard(
         );
         return status;
     }, {});
-
-    // // Add / Enroll user to course
-    // const handleAddEnrollment = async (courseId: any) => {
-    //     await enrollmentsClient.enrollUser(currentUser._id, courseId); 
-    //     dispatch(addEnrollment({ user: currentUser._id, course: courseId })); 
-    //     fetchEnrollments();
-    // }
-    
-    // // Delete / Unenroll user to course
-    // const handleDeleteEnrollment = async (courseId: any) => {
-    //     await enrollmentsClient.unenrollUser(currentUser._id, courseId);
-    //     dispatch(deleteEnrollment({ user: currentUser._id, course: courseId })); 
-    //     fetchEnrollments();
-    //   }
 
     // Add / Enroll user to course
     const handleAddEnrollment = async (courseId: string) => {
@@ -179,23 +112,9 @@ export default function Dashboard(
         }
     }
 
-    // // Toggle enrollment of a course
-    // const toggleEnrollment = (courseId: any) => {
-    //     const isEnrolled = enrollmentStatus[courseId];
-    //         if (isEnrolled) {
-    //             handleDeleteEnrollment(courseId);
-    //             // dispatch(deleteEnrollment({ user: currentUser._id, course: courseId }));
-    //         } 
-    //         else {
-    //             handleAddEnrollment(courseId);
-    //             // dispatch(addEnrollment({ user: currentUser._id, course: courseId }));
-    //         }
-    //     // if isEntrolled is true and user clicks on unenroll --> isEnrolled turns false and enrollmentStatus of the course is updated 
-    //     // if isEntrolled is false and user clicks on enroll --> isEnrolled turns true and enrollmentStatus of the course is updated
-    //     // setEnrollmentStatus({...enrollmentStatus, [courseId]: !isEnrolled,});
-    // };
-
     // Toggle enrollment of a course
+    // if isEnrolled is true and user clicks on unenroll --> isEnrolled turns false and enrollmentStatus of the course is updated 
+    // if isEnrolled is false and user clicks on enroll --> isEnrolled turns true and enrollmentStatus of the course is updated
     const toggleEnrollment = (courseId: string) => {
         const isEnrolled = enrollmentStatus[courseId];
         if (isEnrolled) {
@@ -243,8 +162,6 @@ export default function Dashboard(
                 </Button>
             </StudentProtectedRoute>
 
-            {/* <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2> <hr /> */}
-
             <h2 id="wd-dashboard-published">
                 {isFaculty ? `Published Courses (${allCourses.length})` 
                 : (showEnrolledOnly 
@@ -265,15 +182,7 @@ export default function Dashboard(
                     //             enrollment.course === course._id
                     //     )
                     // ) */}
-                    {coursesToDisplay     
-                    // .filter((course) => {
-                    //     // If not showing enrolled only, show all courses
-                    //     if (!showEnrolledOnly) {
-                    //         return true;
-                    //     }
-                    //     // Otherwise, check if user is enrolled in this course
-                    //     return enrollmentStatus[course._id] === true;
-                    // })           
+                    {coursesToDisplay                
                     .map((course) => (
                         <Col key={course._id} className="wd-dashboard-course" style={{ width: "300px" }}>
                         <Card>

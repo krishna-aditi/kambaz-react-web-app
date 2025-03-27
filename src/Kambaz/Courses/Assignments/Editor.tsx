@@ -7,7 +7,8 @@ import { addAssignment, updateAssignment } from "./reducer";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-
+import * as coursesClient from "../client";
+import * as assignmentsClient from "./client";
 
 export default function AssignmentEditor() {
     const { cid, aid } = useParams();
@@ -24,6 +25,19 @@ export default function AssignmentEditor() {
         duedate: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split(".")[0],
         availabledate: new Date().toISOString().split(".")[0],
     });
+
+    // Create module for course
+    const createAssignmentForCourse = async (assignment: any) => {
+        if (!cid) return;
+        const newAssignment = await coursesClient.createAssignmentForCourse(cid, assignment);
+        dispatch(addAssignment(newAssignment));
+    };
+
+    // Update module for course
+    const saveAssignment = async (assignment: any) => {
+        await assignmentsClient.updateAssignment(assignment);
+        dispatch(updateAssignment(assignment));
+    };  
 
     return (
         <div id="wd-assignments-editor" className="ms-5 me-5">
@@ -114,10 +128,12 @@ export default function AssignmentEditor() {
                     id="wd-save-btn"
                     onClick={() => {
                         if (isNewAssignment) {
-                            dispatch(addAssignment(assignment));
+                            createAssignmentForCourse(assignment);
+                            // dispatch(addAssignment(assignment));
                         } 
                         else if (existingAssignment){
-                            dispatch(updateAssignment(assignment));
+                            saveAssignment(assignment);
+                            // dispatch(updateAssignment(assignment));
                         }
                     }}>
                     Save
