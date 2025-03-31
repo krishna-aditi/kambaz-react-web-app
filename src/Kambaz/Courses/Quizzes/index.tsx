@@ -6,13 +6,37 @@ import * as db from "../../Database";
 import { useParams } from "react-router";
 import { MdOutlineRocketLaunch } from "react-icons/md";
 import GreenCheckmark from "./GreenCheckmark";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
+import { v4 as uuidv4 } from "uuid";
+import { useState } from "react";
 
 export default function Quizzes(){
     const { cid } = useParams();
-    const quizzes = db.quizzes;
+    // const quizzes = db.quizzes;
+    const { quizzes } = useSelector((state: any) => state.quizzesReducer);
+    const navigate = useNavigate();
+    // const [quiz, setQuiz] = useState({// if assignment is not found, create a new assignment
+    //     _id: uuidv4(),
+    //     title: "New Quiz",
+    //     course: cid,
+    //     instruction: "Assignment Description",
+    //     dueDate: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split(".")[0], 
+    //     availableFromDate: new Date().toISOString().split(".")[0], 
+    //     availableUntilDate: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split(".")[0],
+    //     shuffleAnswers: true, 
+    //     timeLimit: 20, 
+    //     multipleAttempts: true, 
+    //     attempts: 1, 
+    //     showCorrectAnswers: true, 
+    //     oneQuestionAtATime: true, 
+    //     webcamRequired: false, 
+    //     published: false
+    // });
+    const [quizId, setQuizId] = useState(uuidv4());
     return(
         <div id="wd-quizzes">
-            <QuizPageControls />
+            <QuizPageControls/>
             <br /><br />
             <ListGroup className="rounded-0" id="wd-quizzes">
                 <ListGroup.Item className="wd-quizzes-title p-0 fs-5 border-gray">

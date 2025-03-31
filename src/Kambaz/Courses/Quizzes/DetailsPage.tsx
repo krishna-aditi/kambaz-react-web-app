@@ -10,21 +10,27 @@ export default function QuizDetailsPage(){
     const dispatch = useDispatch();
     return(
         <div id="wd-quizzes-editor">
-            <div className="d-flex justify-content-center">
+            <div className="float-end d-flex justify-content-center">
                 {/* <a href={`#/Kanbas/Courses/${cid}/Quizzes/${quiz._id}/Preview`}>     */}
-                    <Button className="btn btn-secondary me-2">
+                    <Button variant="outline-secondary" 
+                        size="lg"
+                        className=" btn-secondary me-1">
                         Preview
                     </Button>
                 {/* </a> */}
-                {/* <a href={`#/Kanbas/Courses/${cid}/Quizzes/${quiz._id}/Editor/Details`}> */}
-                    <Button className="btn btn-secondary">
-                        <MdOutlineEdit /> 
+                <a href={`#/Kanbas/Courses/${cid}/Quizzes/${quiz._id}/Editor/Details`}>
+                    <Button variant="outline-secondary" 
+                        size="lg"
+                        className="btn-secondary me-1">
+                        <MdOutlineEdit className="me-1"/> 
                         Edit
                     </Button>
-                {/* </a>     */}
+                </a>    
             </div>
-            <hr />
-
+            <br/>
+            <br/>
+            <br/>
+            
             <h3>{quiz.title}</h3>
 
             {/* Table with quiz details */}
@@ -93,6 +99,15 @@ export default function QuizDetailsPage(){
                      </tr>
                  </tbody>
              </table>
+
+             <div className="d-flex justify-content-center">
+                <Button variant="danger" 
+                            size="lg"
+                            className="me-1">
+                    Preview
+                </Button>
+            </div>
+            <hr/>
         </div>
     );
 }
