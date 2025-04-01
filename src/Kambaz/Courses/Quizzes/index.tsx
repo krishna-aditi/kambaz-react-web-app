@@ -15,25 +15,7 @@ export default function Quizzes(){
     const { cid } = useParams();
     // const quizzes = db.quizzes;
     const { quizzes } = useSelector((state: any) => state.quizzesReducer);
-    const navigate = useNavigate();
-    // const [quiz, setQuiz] = useState({// if assignment is not found, create a new assignment
-    //     _id: uuidv4(),
-    //     title: "New Quiz",
-    //     course: cid,
-    //     instruction: "Assignment Description",
-    //     dueDate: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split(".")[0], 
-    //     availableFromDate: new Date().toISOString().split(".")[0], 
-    //     availableUntilDate: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split(".")[0],
-    //     shuffleAnswers: true, 
-    //     timeLimit: 20, 
-    //     multipleAttempts: true, 
-    //     attempts: 1, 
-    //     showCorrectAnswers: true, 
-    //     oneQuestionAtATime: true, 
-    //     webcamRequired: false, 
-    //     published: false
-    // });
-    const [quizId, setQuizId] = useState(uuidv4());
+    // const navigate = useNavigate();
     return(
         <div id="wd-quizzes">
             <QuizPageControls/>
@@ -52,13 +34,10 @@ export default function Quizzes(){
                     .filter((quiz: any) => quiz.course === cid)
                     .map((quiz: any) => (
                         <ListGroup className="wd-quiz-list rounded-0">
-                            {/* A1 */}
                             <ListGroup.Item className="wd-quiz p-3 ps-1">
                                 <Row>
                                     <Col xs="auto">
-                                        {/* <BsGripVertical className="ms-1 me-2 fs-3" /> */}
                                         <MdOutlineRocketLaunch className="text-success ms-2 me-1 fs-3" />
-                                        {/* <TbFilePencil className="me-2 fs-3 text-success" /> */}
                                     </Col>
                                     <Col xs={6}>
                                         <a className="wd-quiz-link fw-bold text-black text-decoration-none" 
@@ -66,7 +45,6 @@ export default function Quizzes(){
                                             {quiz.title}
                                         </a>
                                         <p className="fs-6 mb-0">
-                                            {/* <span className="text-danger"> Multiple Modules </span> |  */}
                                             <b> Not available until</b> {quiz.availableFromDate.split("T")[0]} at {quiz.availableFromDate.split("T")[1]} | <b>Due</b> {quiz.dueDate.split("T")[0]} at {quiz.dueDate.split("T")[1]} | {quiz.points} pts 
                                         </p>
                                     </Col>

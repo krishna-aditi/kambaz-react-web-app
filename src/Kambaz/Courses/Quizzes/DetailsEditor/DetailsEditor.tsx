@@ -97,12 +97,6 @@ export default function QuizDetailsEditor() {
                     <Form.Check checked className="text-end" type="checkbox">
                         Shuffle Answers
                     </Form.Check>
-                    {/* <Form>
-                        <Form.Check checked className="text-end"
-                            onChange={(e) => { setQuiz({...quiz, time: parseInt(e.target.value) });}}>
-                        Time Limit
-                        </Form.Check>
-                    </Form> */}
                     <Form.Check className="me-3 mt-2" 
                         label={"Time Limit"} 
                         checked={quiz.timeLimit < Infinity || quiz.timeLimit == undefined} 
