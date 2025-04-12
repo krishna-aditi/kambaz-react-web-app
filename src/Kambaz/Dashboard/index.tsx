@@ -1,12 +1,12 @@
 import { Row, Col, Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import FacultyProtectedRoute from "../Account/FacultyProtectedRoute";
-import StudentProtectedRoute from "../Account/StudentProtectedRoute";
-import { setEnrollments, setShowEnrolledOnly, addEnrollment, deleteEnrollment } from "../Enrollments/reducer";
+// import StudentProtectedRoute from "../Account/StudentProtectedRoute";
+import { setShowEnrolledOnly, addEnrollment, deleteEnrollment } from "../Enrollments/reducer";
 import * as enrollmentsClient from "../Enrollments/client";
-import * as coursesClient from "../Courses/client";
+// import * as coursesClient from "../Courses/client";
 
 export default function Dashboard(   
     { courses, course, setCourse, addNewCourse, deleteCourse, updateCourse, enrolling, setEnrolling, updateEnrollment }: 
