@@ -1,11 +1,12 @@
 import { Row, Col, Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+// import { useDispatch } from "react-redux";
+// import { useSelector } from "react-redux";
+// import { useState } from "react";
 import FacultyProtectedRoute from "../Account/FacultyProtectedRoute";
 // import StudentProtectedRoute from "../Account/StudentProtectedRoute";
-import { setShowEnrolledOnly, addEnrollment, deleteEnrollment } from "../Enrollments/reducer";
-import * as enrollmentsClient from "../Enrollments/client";
+// import { setShowEnrolledOnly, addEnrollment, deleteEnrollment } from "../Enrollments/reducer";
+// import * as enrollmentsClient from "../Enrollments/client";
 // import * as coursesClient from "../Courses/client";
 
 export default function Dashboard(   
@@ -21,13 +22,13 @@ export default function Dashboard(
         updateEnrollment: (courseId: string, enrolled: boolean) => void;
     })
     {
-    const { currentUser } = useSelector((state: any) => state.accountReducer);
-    const { enrollments, showEnrolledOnly } = useSelector((state: any) => state.enrollmentReducer);
-    const dispatch = useDispatch();
-    const [allCourses, setAllCourses] = useState(courses);
+    // const { currentUser } = useSelector((state: any) => state.accountReducer);
+    // const { enrollments, showEnrolledOnly } = useSelector((state: any) => state.enrollmentReducer);
+    // const dispatch = useDispatch();
+    // const [allCourses, setAllCourses] = useState(courses);
 
     // isFaculty check
-    const isFaculty = currentUser && currentUser.role === "FACULTY";
+    // const isFaculty = currentUser && currentUser.role === "FACULTY";
     
     // const fetchEnrollments = async () => { 
     //     if (currentUser && currentUser._id) {
@@ -60,7 +61,7 @@ export default function Dashboard(
     // }, []);
 
     // This stays the same but will start with showing enrolled only
-    const toggleEnrollmentView = () => { dispatch(setShowEnrolledOnly(!showEnrolledOnly)); setEnrolling(!enrolling); };
+    // const toggleEnrollmentView = () => { dispatch(setShowEnrolledOnly(!showEnrolledOnly)); setEnrolling(!enrolling); };
 
     // Enrollment status of each course --> for each course, check whether current user is enrolled
     // status object with the following view
@@ -71,66 +72,66 @@ export default function Dashboard(
     //     ...
     // }
 
-    const displayedCourses = () => {
-        if (!currentUser) return [];
+    // const displayedCourses = () => {
+    //     if (!currentUser) return [];
         
-        if (isFaculty) {
-            return allCourses;
-        }
+    //     if (isFaculty) {
+    //         return allCourses;
+    //     }
     
-        if (showEnrolledOnly) {
-            return allCourses.filter(course =>
-                    enrollments.some((enrollment: any) => 
-                        enrollment.user === currentUser._id && enrollment.course === course._id));
-        } else {
-            return allCourses;
-        }
-    };
+    //     if (showEnrolledOnly) {
+    //         return allCourses.filter(course =>
+    //                 enrollments.some((enrollment: any) => 
+    //                     enrollment.user === currentUser._id && enrollment.course === course._id));
+    //     } else {
+    //         return allCourses;
+    //     }
+    // };
 
-    const enrollmentStatus = currentUser ? allCourses.reduce((status, course) => { 
-        status[course._id] = Array.isArray(enrollments) && enrollments.some(
-            (enrollment: any) =>
-                enrollment.user === currentUser._id && enrollment.course === course._id
-        );
-        return status;
-    }, {}) : {};
+    // const enrollmentStatus = currentUser ? allCourses.reduce((status, course) => { 
+    //     status[course._id] = Array.isArray(enrollments) && enrollments.some(
+    //         (enrollment: any) =>
+    //             enrollment.user === currentUser._id && enrollment.course === course._id
+    //     );
+    //     return status;
+    // }, {}) : {};
 
     // Add / Enroll user to course
-    const handleAddEnrollment = async (courseId: string) => {
-        if (!currentUser) return;
-        try {
-            await enrollmentsClient.enrollUser(currentUser._id, courseId); 
-            dispatch(addEnrollment({ user: currentUser._id, course: courseId })); 
-        } catch (error) {
-            console.error("Error enrolling user:", error);
-        }
-    }
+    // const handleAddEnrollment = async (courseId: string) => {
+    //     if (!currentUser) return;
+    //     try {
+    //         await enrollmentsClient.enrollUser(currentUser._id, courseId); 
+    //         dispatch(addEnrollment({ user: currentUser._id, course: courseId })); 
+    //     } catch (error) {
+    //         console.error("Error enrolling user:", error);
+    //     }
+    // }
     
     // Delete / Unenroll user from course
-    const handleDeleteEnrollment = async (courseId: string) => {
-        if (!currentUser) return;
-        try {
-            await enrollmentsClient.unenrollUser(currentUser._id, courseId);
-            dispatch(deleteEnrollment({ user: currentUser._id, course: courseId })); 
-        } catch (error) {
-            console.error("Error unenrolling user:", error);
-        }
-    }
+    // const handleDeleteEnrollment = async (courseId: string) => {
+    //     if (!currentUser) return;
+    //     try {
+    //         await enrollmentsClient.unenrollUser(currentUser._id, courseId);
+    //         dispatch(deleteEnrollment({ user: currentUser._id, course: courseId })); 
+    //     } catch (error) {
+    //         console.error("Error unenrolling user:", error);
+    //     }
+    // }
 
     // Toggle enrollment of a course
     // if isEnrolled is true and user clicks on unenroll --> isEnrolled turns false and enrollmentStatus of the course is updated 
     // if isEnrolled is false and user clicks on enroll --> isEnrolled turns true and enrollmentStatus of the course is updated
-    const toggleEnrollment = (courseId: string) => {
-        if (!currentUser) return;
-        const isEnrolled = enrollmentStatus[courseId];
-        if (isEnrolled) {
-            handleDeleteEnrollment(courseId);
-        } else {
-            handleAddEnrollment(courseId);
-        }
-    };
+    // const toggleEnrollment = (courseId: string) => {
+    //     if (!currentUser) return;
+    //     const isEnrolled = enrollmentStatus[courseId];
+    //     if (isEnrolled) {
+    //         handleDeleteEnrollment(courseId);
+    //     } else {
+    //         handleAddEnrollment(courseId);
+    //     }
+    // };
 
-    const coursesToDisplay = displayedCourses();
+    // const coursesToDisplay = displayedCourses();
 
     return (
         <div id="wd-dashboard">
