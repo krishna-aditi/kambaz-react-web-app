@@ -9,9 +9,12 @@ const modulesSlice = createSlice({
     name: "modules",
     initialState,
     reducers: {
-    setModules: (state, action) => {
-        state.modules = action.payload;
-    },
+    // setModules: (state, action) => {
+    //     state.modules = action.payload;
+    // },
+    setModules: (state, { payload: modules }) => {
+        state.modules = modules;
+    },   
     addModule: (state, { payload: module }) => { const newModule: any = {
         _id: uuidv4(),
         lessons: [],
