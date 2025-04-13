@@ -19,19 +19,31 @@ export default function Assignments() {
     const dispatch = useDispatch();
 
     // Retreive assignments for course
-    const fetchAssignments = async () => {
-        const assignments = await coursesClient.findAssignmentsForCourse(cid as string);
+    // const fetchAssignments = async () => {
+    //     const assignments = await coursesClient.findAssignmentsForCourse(cid as string);
+    //     dispatch(setAssignments(assignments));
+    // };
+    // useEffect(() => {
+    //     fetchAssignments();
+    // }, []);
+    const fetchAssignmentsForCourse = async () => {
+        const assignments = await coursesClient.findAssignmentsForCourse(cid!);
         dispatch(setAssignments(assignments));
     };
     useEffect(() => {
-        fetchAssignments();
-    }, []);
+        fetchAssignmentsForCourse();
+    }, [cid]);
 
     // Delete assignments for course
-    const removeAssignment = async (assignmentId: string) => {
+    // const removeAssignment = async (assignmentId: string) => {
+    //     await assignmentsClient.deleteAssignment(assignmentId);
+    //     dispatch(deleteAssignment(assignmentId));
+    // };
+    const deleteModuleHandler = async (assignmentId: string) => {
         await assignmentsClient.deleteAssignment(assignmentId);
         dispatch(deleteAssignment(assignmentId));
     };
+     
     
     return (
         <div id="wd-assignments">
@@ -67,15 +79,15 @@ export default function Assignments() {
                                             {assignment.title}
                                         </a>
                                         <p className="fs-6 mb-0">
-                                            <span className="text-danger"> Multiple Modules </span> | 
-                                            <b> Not available until</b> {assignment.availabledate.split("T")[0]} at {assignment.availabledate.split("T")[1]} | <b>Due</b> {assignment.duedate.split("T")[0]} at {assignment.duedate.split("T")[1]} | {assignment.points} pts
+                                            <span className="text-danger"> Multiple Modules </span> | <b>Not available until</b> {assignment.availabledate.split("T")[0]} at {new Date(assignment.availabledate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} | <b>Due</b> {assignment.duedate.split("T")[0]} at {new Date(assignment.duedate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} | {assignment.points} pts
+                                            {/* <b> Not available until</b> {assignment.availabledate.split("T")[0]} at {assignment.availabledate.split("T")[1]} | <b>Due</b> {assignment.duedate.split("T")[0]} at {assignment.duedate.split("T")[1]} | {assignment.points} pts */}
                                         </p>
                                     </Col>
                                     <Col>
                                         <AssignmentControls assignmentId={assignment._id}
                                             assignmentTitle={assignment.title}
                                             deleteAssignment={
-                                                (assignmentId) => removeAssignment(assignmentId)
+                                                (assignmentId) => deleteModuleHandler(assignmentId)
                                                 // {dispatch(deleteAssignment(assignmentId));}
                                             } />
                                     </Col>
