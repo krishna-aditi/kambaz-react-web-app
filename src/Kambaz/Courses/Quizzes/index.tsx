@@ -4,12 +4,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { RiQuestionAnswerLine } from 'react-icons/ri';
 import { FaSearch } from 'react-icons/fa';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { deleteQuiz, setQuizzes, togglePublishQuiz } from './reducer';
 
 import * as client from "./client";
 import { QuizQuestion } from "./QuizQuestions/questionTypes";
 import { SubmissionState } from "./QuizPreview/QuizReview/QuizSubmissionType";
 import { Quiz, QuizRootState } from './types';
+import {createSelector} from "@reduxjs/toolkit";
 
 interface Enrollment {
   _id: string;
@@ -54,13 +56,33 @@ export default function QuizList() {
     state.submissionsReducer
   );
 
-  const quizzes = useSelector((state: QuizRootState) => 
-    state.quizzesReducer.quizzes.filter(quiz => {
-      const baseFilter = quiz.course === cid &&
-        quiz.title.toLowerCase().includes(searchTerm.toLowerCase());
-      return baseFilter;
-    })
+  const selectFilteredQuizzes = createSelector(
+      [(state) => state.quizzesReducer.quizzes,
+        (_, courseId) => courseId,
+        (_, __, searchTerm) => searchTerm],
+      (quizzes, courseId, searchTerm) =>
+          quizzes.filter(quiz =>
+              quiz.course === courseId &&
+              quiz.title.toLowerCase().includes(searchTerm.toLowerCase())
+          )
   );
+
+// Then in your component:
+  const quizzes = useSelector(
+      (state) => selectFilteredQuizzes(state, cid, searchTerm)
+  );
+
+  // const quizzes = useSelector((state: QuizRootState) =>
+  //   state.quizzesReducer.quizzes.filter(quiz => {
+  //     const baseFilter = quiz.course === cid &&
+  //       quiz.title.toLowerCase().includes(searchTerm.toLowerCase());
+  //     return baseFilter;
+  //   })
+  // );
+
+  // const quizzes = useSelector((state: QuizRootState) =>
+  //     selectFilteredQuizzes(state, cid, searchTerm)
+  // );
 
   useEffect(() => {
     const fetchQuizzes = async () => {
@@ -96,10 +118,13 @@ export default function QuizList() {
     }
   };
 
-  const handlePublishToggle = async (quizId: string) => {
+  const [forceUpdate, setForceUpdate] = useState(false);
+
+  const handlePublishToggle = async (quizId) => {
     try {
       await client.publishQuiz(quizId);
       dispatch(togglePublishQuiz(quizId));
+      setForceUpdate(prev => !prev); // Force component re-render
     } catch (error) {
       console.error("Error toggling quiz publish status:", error);
     }
@@ -195,54 +220,53 @@ export default function QuizList() {
                     >
                       {quiz.title}
                     </Link>
-                    <div className="d-flex align-items-center" style={{ gap: '15px' }}>
-                      <span className="fs-5">
-                      {!quiz.published || 
-                        new Date(quiz.availableUntilDate) < new Date() ||
-                        new Date(quiz.availableFromDate) > new Date() 
-                          ? '🚫' 
-                          : '✅'}
-                      </span>
+                    <div className="d-flex align-items-center" style={{gap: '15px'}}>
+                      <span className="fs-5"
+                            key={`status-${quiz._id}-${quiz.published}-${forceUpdate}`}>
+  {!quiz.published 
+      ? '🚫'
+      : '✅'}
+</span>
                       {currentUser.role !== 'STUDENT' && (
-                        <div className="dropdown">
-                          <button 
-                            className="btn btn-light btn-sm"
-                            data-bs-toggle="dropdown"
-                          >
-                            <BsThreeDotsVertical />
-                          </button>
-                          <ul className="dropdown-menu dropdown-menu-end">
-                            <li>
-                              <Link 
-                                to={`/Kambaz/Courses/${cid}/Quizzes/${quiz._id}`}
-                                className="dropdown-item"
-                              >
-                                Edit
-                              </Link>
-                            </li>
-                            <li>
-                              <button 
-                                className="dropdown-item"
-                                onClick={() => handleDeleteClick(quiz._id, quiz.title)}
-                              >
-                                Delete
-                              </button>
-                            </li>
-                            <li>
-                              <button 
-                                className="dropdown-item"
-                                onClick={() => handlePublishToggle(quiz._id)}
-                              >
-                                {quiz.published ? 'Unpublish' : 'Publish'}
-                              </button>
-                            </li>
-                          </ul>
-                        </div>
+                          <div className="dropdown">
+                            <button
+                                className="btn btn-light btn-sm"
+                                data-bs-toggle="dropdown"
+                            >
+                              <BsThreeDotsVertical/>
+                            </button>
+                            <ul className="dropdown-menu dropdown-menu-end">
+                              <li>
+                                <Link
+                                    to={`/Kambaz/Courses/${cid}/Quizzes/${quiz._id}`}
+                                    className="dropdown-item"
+                                >
+                                  Edit
+                                </Link>
+                              </li>
+                              <li>
+                                <button
+                                    className="dropdown-item"
+                                    onClick={() => handleDeleteClick(quiz._id, quiz.title)}
+                                >
+                                  Delete
+                                </button>
+                              </li>
+                              <li>
+                                <button
+                                    className="dropdown-item"
+                                    onClick={() => handlePublishToggle(quiz._id)}
+                                >
+                                  {quiz.published ? 'Unpublish' : 'Publish'}
+                                </button>
+                              </li>
+                            </ul>
+                          </div>
                       )}
                     </div>
                   </div>
-                  
-                  <div className="d-flex text-secondary flex-wrap" style={{ gap: '15px' }}>
+
+                  <div className="d-flex text-secondary flex-wrap" style={{gap: '15px'}}>
                     <span>{getAvailabilityStatus(quiz)}</span>
                     <span>|</span>
                     <span>Due {formatDate(quiz.dueDate)}</span>

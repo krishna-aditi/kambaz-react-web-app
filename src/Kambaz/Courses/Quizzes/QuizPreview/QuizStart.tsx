@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../store';
@@ -42,6 +42,11 @@ export default function QuizStartScreen() {
   const canBeginQuiz = isQuizPublished && isAvailable && (AttempLeft > 0 || isFacultyOrAdmin);
 
   const renderActionButton = () => {
+    console.log('Quiz Published:', isQuizPublished);
+    console.log('Is Student:', isStudent);
+    console.log('Is FacultyorAdmin:', isFacultyOrAdmin);
+    console.log('Is Available:', isAvailable);
+
     if (!isQuizPublished && isStudent) {
       return <p className="text-muted">This quiz is not yet published.</p>;
     }

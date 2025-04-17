@@ -155,6 +155,7 @@ export default function QuizPreview() {
   };
 
   const handleQuizSubmit = async () => {
+    console.log('Number of submissions', submissions);
     if (!qid || !cid) return; 
   
     try {
@@ -249,6 +250,7 @@ export default function QuizPreview() {
           percentage: scoreResult.percentage
         }
       });
+      console.log('Number of submissions after code', submissions);
     } catch (error) {
       console.error('Error submitting quiz:', error);
     }
@@ -440,6 +442,7 @@ export default function QuizPreview() {
                   setCurrentQuestionIndex(prev => prev + 1);
                 } else {
                   handleQuizSubmit();
+
                 }
               }}
               style={{

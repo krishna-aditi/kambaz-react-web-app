@@ -42,5 +42,6 @@ export const publishQuiz = async (quizId: string) => {
   const response = await request.put(
     `${BASE_API}/quizzes/${quizId}/publish`
   );
+  console.log(response.data);
   return response.data;
 };

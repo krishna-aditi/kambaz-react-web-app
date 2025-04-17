@@ -4,6 +4,7 @@ import { QuizSubmission, SubmissionState } from "./QuizSubmissionType";
 
 export const submitQuiz = createAsyncThunk(
   "submissions/submitQuiz",
+
   async ({ quizId, submission }: { quizId: string; submission: Partial<QuizSubmission> }) => {
     const response = await client.createSubmission(quizId, submission);
     return response;

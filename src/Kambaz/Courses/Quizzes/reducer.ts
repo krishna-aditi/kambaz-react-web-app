@@ -23,11 +23,19 @@ const quizzesSlice = createSlice({
         q._id === quiz._id ? quiz : q
       );
     },
+    // togglePublishQuiz: (state, { payload: quizId }) => {
+    //   state.quizzes = state.quizzes.map(q =>
+    //     q._id === quizId ? { ...q, published: !q.published } : q
+    //   );
+    // }
+
     togglePublishQuiz: (state, { payload: quizId }) => {
-      state.quizzes = state.quizzes.map(q =>
-        q._id === quizId ? { ...q, published: !q.published } : q
-      );
+      const quiz = state.quizzes.find(q => q._id === quizId);
+      if (quiz) {
+        quiz.published = !quiz.published;
+      }
     }
+
   },
 });
 
