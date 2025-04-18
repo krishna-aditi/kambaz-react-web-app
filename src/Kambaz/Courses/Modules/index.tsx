@@ -18,34 +18,60 @@ export default function Modules() {
     const dispatch = useDispatch();
 
     // Update module for course
-    const saveModule = async (module: any) => {
+    // const saveModule = async (module: any) => {
+    //     await modulesClient.updateModule(module);
+    //     dispatch(updateModule(module));
+    // };
+    const updateModuleHandler = async (module: any) => {
         await modulesClient.updateModule(module);
         dispatch(updateModule(module));
-    };    
+    };
+      
 
     // Remove / Delete module for course
-    const removeModule = async (moduleId: string) => {
+    // const removeModule = async (moduleId: string) => {
+    //     await modulesClient.deleteModule(moduleId);
+    //     dispatch(deleteModule(moduleId));
+    // };
+    const deleteModuleHandler = async (moduleId: string) => {
         await modulesClient.deleteModule(moduleId);
         dispatch(deleteModule(moduleId));
-    };    
+    };
+     
+
 
     // Create module for course
-    const createModuleForCourse = async () => {
-        if (!cid) return;
-        const newModule = { name: moduleName, course: cid };
-        const module = await coursesClient.createModuleForCourse(cid, newModule);
-        dispatch(addModule(module));
+    // const createModuleForCourse = async () => {
+    //     if (!cid) return;
+    //     const newModule = { name: moduleName, course: cid };
+    //     const module = await coursesClient.createModuleForCourse(cid, newModule);
+    //     dispatch(addModule(module));
+    // };
+    const addModuleHandler = async () => {
+        const newModule = await coursesClient.createModuleForCourse(cid!, {
+          name: moduleName,
+          course: cid,
+        });
+        dispatch(addModule(newModule));
+        setModuleName("");
     };
+     
     
     // Read modules for course
-    const fetchModules = async () => {
-        const modules = await coursesClient.findModulesForCourse(cid as string);
+    // const fetchModules = async () => {
+    //     const modules = await coursesClient.findModulesForCourse(cid as string);
+    //     dispatch(setModules(modules));
+    // };
+    // useEffect(() => {
+    //     fetchModules();
+    // }, []);
+    const fetchModulesForCourse = async () => {
+        const modules = await coursesClient.findModulesForCourse(cid!);
         dispatch(setModules(modules));
     };
     useEffect(() => {
-        fetchModules();
-    }, []);
-    
+        fetchModulesForCourse();
+    }, [cid]);
 
     return (
       <div>
@@ -53,7 +79,10 @@ export default function Modules() {
             dispatch(addModule({ name: moduleName, course: cid }));
             setModuleName("");
         }} /> */}
-        <ModulesControls setModuleName={setModuleName} moduleName={moduleName} addModule={createModuleForCourse} />
+        <ModulesControls setModuleName={setModuleName} 
+            moduleName={moduleName} 
+            addModule={addModuleHandler} />
+            {/* addModule={createModuleForCourse} /> */}
         <br /><br /><br /><br />
 
         <ListGroup className="rounded-0" id="wd-modules">
@@ -66,10 +95,12 @@ export default function Modules() {
                     {!module.editing && module.name}
                     { module.editing && (
                         <FormControl className="w-50 d-inline-block"
-                            onChange={(e) =>  dispatch(updateModule({ ...module, name: e.target.value }))}
+                            onChange={(e) =>  updateModuleHandler({ ...module, name: e.target.value })}
+                            // onChange={(e) =>  dispatch(updateModule({ ...module, name: e.target.value }))}
                             onKeyDown={(e) => {
                                 if (e.key === "Enter") {
-                                    saveModule({ ...module, editing: false });
+                                    updateModuleHandler({ ...module, editing: false });
+                                    // saveModule({ ...module, editing: false });
                                     // dispatch(updateModule({ ...module, editing: false }));
                                 }
                             }}
@@ -78,7 +109,8 @@ export default function Modules() {
                     {/* <ModuleControlButtons moduleId={module._id} deleteModule=dispatch({deleteModule}) editModule={editModule}/> */}
                     <ModuleControlButtons moduleId={module._id}
                         // deleteModule={(moduleId) => {dispatch(deleteModule(moduleId)); }} 
-                        deleteModule={(moduleId) => removeModule(moduleId)}
+                        // deleteModule={(moduleId) => removeModule(moduleId)}
+                        deleteModule={(moduleId) => deleteModuleHandler(moduleId)}
                         editModule={(moduleId) => dispatch(editModule(moduleId))} />
                 </div>
                 {module.lessons && (
