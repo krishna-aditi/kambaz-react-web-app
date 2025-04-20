@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../../store';
+// import { RootState } from '../../../store';
 import { fetchSubmissions} from './QuizReview/reducer';
+// import { useSelector, useDispatch } from 'react-redux';
+// import { fetchSubmissions } from './QuizReview/reducer';
 
 export default function QuizStartScreen() {
   const { cid, qid } = useParams();
@@ -13,8 +15,8 @@ export default function QuizStartScreen() {
     state.quizzesReducer.quizzes.find((q: any) => q._id === qid)
   );
 
-  const { currentUser } = useSelector((state: RootState) => state.accountReducer);
-  const { submissions, status } = useSelector((state: RootState) => state.submissionsReducer);
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const { submissions } = useSelector((state: any) => state.submissionsReducer);
 
   useEffect(() => {
     if (qid && currentUser._id) {
@@ -91,10 +93,16 @@ export default function QuizStartScreen() {
     <div className="p-4" style={{ maxWidth: '800px', margin: '0 auto' }}>
       <h3>{quiz?.title}</h3>
       
-      <div className="alert alert-warning mt-3">
+      {/* <div className="alert alert-warning mt-3">
         <i className="bi bi-exclamation-circle me-2"></i>
-        This is a preview of the published version of the quiz
-      </div>
+        This is a preview of the published version of the quiz.
+      </div> */}
+      {isFacultyOrAdmin && (
+        <div className="alert alert-warning mt-3">
+          <i className="bi bi-exclamation-circle me-2"></i>
+          This is a preview of the published version of the quiz
+        </div>
+      )}
 
       <div className="card mt-4">
         <div className="card-body">
@@ -137,7 +145,7 @@ export default function QuizStartScreen() {
 
           <div className="d-flex justify-content-between align-items-center mt-4">
             <button
-              className="btn btn-outline-dark"
+              className="btn btn-secondary"
               onClick={() => navigate(`/Kambaz/Courses/${cid}/Quizzes/${qid}/details`)}
             >
               Cancel

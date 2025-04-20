@@ -1,6 +1,6 @@
 import * as client from "./client";
 import { QuizForm, Quiz, QuizRootState } from './types';
-import  QuizQuestions  from './QuizQuestions//index';
+import  QuizQuestions  from './QuizQuestions/index';
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -167,22 +167,22 @@ export default function QuizEditor() {
     <div className="wd-kambaz-quiz-editor p-4">
       {/* Header */}
       <div className="d-flex justify-content-between align-items-center mb-3">
-      <div className="d-flex align-items-center gap-2">
-        <span style={{ fontSize: '1.1rem' }}>Points {formData.points || 0}</span>
-        <div className="d-flex align-items-center" style={{ color: '#666' }}>
-          {quiz?.published ? (
-            <>
-              <i className="fas fa-check me-1"></i>
-              <span>Published</span>
-            </>
-          ) : (
-            <>
-              <i className="fas fa-ban me-1"></i>
-              <span>Not Published</span>
-            </>
-          )}
+        <div className="d-flex align-items-center gap-2">
+          <span style={{ fontSize: '1.1rem' }}>Points {formData.points || 0}</span>
+          <div className="d-flex align-items-center" style={{ color: '#666' }}>
+            {quiz?.published ? (
+              <>
+                <i className="fas fa-check me-1"></i>
+                <span>Published</span>
+              </>
+            ) : (
+              <>
+                <i className="fas fa-ban me-1"></i>
+                <span>Not Published</span>
+              </>
+            )}
+          </div>
         </div>
-      </div>
         
         <div className="position-relative">
           <button 
@@ -244,7 +244,7 @@ export default function QuizEditor() {
 
       {activeTab === 'details' ? (
       <>
-      {/* Quiz Title */}
+      `{/* Quiz Title */}
       <div className="mb-4">
         <input
           type="text"
@@ -556,7 +556,7 @@ export default function QuizEditor() {
       {/* Footer Buttons */}
       <div className="d-flex justify-content-center gap-2">
         <button 
-          className="btn btn-light" 
+          className="btn btn-secondary" 
           onClick={() => navigate(`/Kambaz/Courses/${cid}/Quizzes`)}
         >
           Cancel
@@ -577,7 +577,7 @@ export default function QuizEditor() {
       </>
       ) : (
         cid && qid ? (
-          <QuizQuestions quizId={qid} courseId={cid} />
+          <QuizQuestions/>
         ) : (
           <div>Missing required parameters</div>
         )

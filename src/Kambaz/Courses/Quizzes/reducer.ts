@@ -9,8 +9,11 @@ const quizzesSlice = createSlice({
   name: "quizzes",
   initialState,
   reducers: {
-    setQuizzes: (state, action) => {
-      state.quizzes = action.payload;
+    // setQuizzes: (state, action) => {
+    //   state.quizzes = action.payload;
+    // },
+    setQuizzes: (state, {payload: quizzes}) => {
+      state.quizzes = quizzes;
     },
     addQuiz: (state, { payload: quiz }) => {
       state.quizzes.push(quiz);

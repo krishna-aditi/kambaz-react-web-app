@@ -13,6 +13,9 @@ import { SubmissionState } from "./QuizPreview/QuizReview/QuizSubmissionType";
 import { Quiz, QuizRootState } from './types';
 import {createSelector} from "@reduxjs/toolkit";
 
+// quizClient from client.ts
+// import * as quizClient from "../client";
+
 interface Enrollment {
   _id: string;
   user: string;
@@ -55,13 +58,13 @@ export default function QuizList() {
   const { submissions } = useSelector((state: RootState) => 
     state.submissionsReducer
   );
-
+ 
   const selectFilteredQuizzes = createSelector(
       [(state) => state.quizzesReducer.quizzes,
         (_, courseId) => courseId,
         (_, __, searchTerm) => searchTerm],
-      (quizzes, courseId, searchTerm) =>
-          quizzes.filter(quiz =>
+      (quizzes: Quiz[], courseId: string, searchTerm: string) =>
+          quizzes.filter( (quiz: Quiz) =>
               quiz.course === courseId &&
               quiz.title.toLowerCase().includes(searchTerm.toLowerCase())
           )
@@ -96,6 +99,14 @@ export default function QuizList() {
     fetchQuizzes();
   }, [cid, dispatch]);
 
+  // const fetchQuizzesForCourse = async () => {
+  //   const quizzes = await quizClient.findModulesForCourse(cid!);
+  //   dispatch(setQuizzes(quizzes));
+  // };
+  // useEffect(() => {
+  //   fetchQuizzesForCourse();
+  // }, [cid]);
+
   const handleDeleteClick = (quizId: string, title: string) => {
     setDeleteDialog({
       isOpen: true,
@@ -120,7 +131,7 @@ export default function QuizList() {
 
   const [forceUpdate, setForceUpdate] = useState(false);
 
-  const handlePublishToggle = async (quizId) => {
+  const handlePublishToggle = async (quizId: string) => {
     try {
       await client.publishQuiz(quizId);
       dispatch(togglePublishQuiz(quizId));
@@ -201,7 +212,7 @@ export default function QuizList() {
         </div>
         
         <div className="list-group list-group-flush">
-          {quizzes.map((quiz) => (
+          {quizzes.map((quiz: Quiz) => (
             <div 
               key={quiz._id} 
               className="list-group-item py-3"
@@ -308,7 +319,7 @@ export default function QuizList() {
                 ></button>
               </div>
               <div className="modal-body">
-                Are you sure you want to delete the quiz "{deleteDialog.quizTitle}"?
+                Are you sure you want to delete the quiz <b>"{deleteDialog.quizTitle}"</b>?
               </div>
               <div className="modal-footer">
                 <button 

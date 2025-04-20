@@ -11,7 +11,7 @@ export default function QuizDetails() {
   );
 
   const isFacultyOrAdmin = currentUser.role === 'FACULTY' || currentUser.role === 'ADMIN';
-  const isStudent = currentUser.role === 'Student';
+  // const isStudent = currentUser.role === 'STUDENT';
 
   const formatDate = (date: Date | string) => {
     if (!date) return '';
@@ -31,45 +31,45 @@ export default function QuizDetails() {
     <div className="p-4" style={{ maxWidth: '800px', margin: '0 auto' }}>
         <div className="bg-white d-flex justify-content-center gap-2 p-2 mb-4">
           <button 
-            className="btn"
-            style={{
-              backgroundColor: '#f5f5f5',
-              border: '1px solid #ccc',
-              borderRadius: '3px',
-              padding: '6px 12px',
-              color: '#333'
-            }}
+            className="btn btn-danger"
+            // style={{
+            //   backgroundColor: '#f5f5f5',
+            //   border: '1px solid #ccc',
+            //   borderRadius: '3px',
+            //   padding: '6px 12px',
+            //   color: '#333'
+            // }}
             onClick={() => navigate(`/Kambaz/Courses/${cid}/Quizzes/${qid}/preview`)}
-            onMouseOver={(e) => {
-              e.currentTarget.style.backgroundColor = '#e6e6e6';
-              e.currentTarget.style.borderColor = '#adadad';
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.backgroundColor = '#f5f5f5';
-              e.currentTarget.style.borderColor = '#ccc';
-            }}
+            // onMouseOver={(e) => {
+            //   e.currentTarget.style.backgroundColor = '#e6e6e6';
+            //   e.currentTarget.style.borderColor = '#adadad';
+            // }}
+            // onMouseOut={(e) => {
+            //   e.currentTarget.style.backgroundColor = '#f5f5f5';
+            //   e.currentTarget.style.borderColor = '#ccc';
+            // }}
           >
-            Preview
+            {isFacultyOrAdmin ? "Preview" : "Start Quiz"}
           </button>
           {isFacultyOrAdmin && (
             <button 
-              className="btn"
-              style={{
-                backgroundColor: '#f5f5f5',
-                border: '1px solid #ccc',
-                borderRadius: '3px',
-                padding: '6px 12px',
-                color: '#333'
-              }}
+              className="btn btn-secondary"
+              // style={{
+              //   backgroundColor: '#f5f5f5',
+              //   border: '1px solid #ccc',
+              //   borderRadius: '3px',
+              //   padding: '6px 12px',
+              //   color: '#333'
+              // }}
               onClick={() => navigate(`/Kambaz/Courses/${cid}/Quizzes/${qid}`)}
-              onMouseOver={(e) => {
-                e.currentTarget.style.backgroundColor = '#e6e6e6';
-                e.currentTarget.style.borderColor = '#adadad';
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.backgroundColor = '#f5f5f5';
-                e.currentTarget.style.borderColor = '#ccc';
-              }}
+              // onMouseOver={(e) => {
+              //   e.currentTarget.style.backgroundColor = '#e6e6e6';
+              //   e.currentTarget.style.borderColor = '#adadad';
+              // }}
+              // onMouseOut={(e) => {
+              //   e.currentTarget.style.backgroundColor = '#f5f5f5';
+              //   e.currentTarget.style.borderColor = '#ccc';
+              // }}
             >
               <i className="fas fa-edit me-1"></i>Edit
             </button>

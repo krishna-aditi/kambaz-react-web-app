@@ -282,18 +282,27 @@ const QuizReview = () => {
       <div className="mt-4">
         <button
           onClick={() => navigate(`/Kambaz/Courses/${cid}/Quizzes`)}
-          className="btn btn-outline-primary"
+          className="btn btn-secondary"
         >
           Return to Quizzes
         </button>
         
         {quiz?.multipleAttempts && (
-          <button
-            onClick={() => navigate(`/Kambaz/Courses/${cid}/Quizzes/${qid}/preview/take`)}
-            className="btn btn-primary ms-2"
-          >
-            Take Quiz Again
-          </button>
+          (() => {
+            const countOfAttempts = submissions?.length || 0;
+            const attemptsLeft = quiz.numberOfAttempts - countOfAttempts;
+            return attemptsLeft > 0 ? (
+              <button
+                onClick={() => navigate(`/Kambaz/Courses/${cid}/Quizzes/${qid}/preview/take`)}
+                className="btn btn-primary ms-2"
+              >
+                Take Quiz Again ({attemptsLeft} attempt{attemptsLeft !== 1 ? 's' : ''} left)
+              </button>
+            ) : (
+              <div className="text-muted ms-2 d-flex align-items-center">
+              </div>
+            );
+          })()
         )}
       </div>
     </div>

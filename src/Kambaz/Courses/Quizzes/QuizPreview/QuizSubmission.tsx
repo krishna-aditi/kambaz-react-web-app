@@ -1,11 +1,16 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+// import { useSelector } from 'react-redux';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchSubmissions } from './QuizReview/reducer';
 import { QuizQuestionRootState } from '../QuizQuestions/questionTypes.ts';
 
 export default function QuizSubmission() {
   const { qid, cid } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { currentUser } = useSelector((state: any) => state.accountReducer);
+  const { submissions } = useSelector((state: any) => state.submissionsReducer);
   const location = useLocation();
   
   const { 
@@ -21,6 +26,15 @@ export default function QuizSubmission() {
   const quiz = useSelector((state: any) => 
     state.quizzesReducer.quizzes.find((q: any) => q._id === qid)
   );
+
+  useEffect(() => {
+    if (qid && currentUser?._id) {
+      dispatch(fetchSubmissions({ 
+        quizId: qid, 
+        studentId: currentUser._id 
+      }) as any);
+    }
+  }, [qid, currentUser?._id, dispatch]);
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
@@ -104,7 +118,7 @@ export default function QuizSubmission() {
           Return to Quizzes
         </button>
 
-        {quiz?.multipleAttempts && (
+        {/* {quiz?.multipleAttempts && (
           <button
             onClick={() => navigate(`/Kambaz/Courses/${cid}/Quizzes/${qid}/preview/take`)}
             style={{
@@ -118,6 +132,30 @@ export default function QuizSubmission() {
           >
             Take Quiz Again
           </button>
+        )} */}
+        {quiz?.multipleAttempts && (
+          (() => {
+            const countOfAttempts = submissions?.length || 0;
+            const attemptsLeft = quiz.numberOfAttempts - countOfAttempts;
+            
+            return attemptsLeft > 0 ? (
+              <button
+                onClick={() => navigate(`/Kambaz/Courses/${cid}/Quizzes/${qid}/preview/take`)}
+                style={{
+                  backgroundColor: '#2D8C3C',
+                  color: 'white',
+                  border: 'none',
+                  padding: '8px 16px',
+                  borderRadius: '4px',
+                  cursor: 'pointer'
+                }}
+              >
+                Take Quiz Again ({attemptsLeft} attempt{attemptsLeft !== 1 ? 's' : ''} left)
+              </button>
+            ) : (
+              <div className="text-muted"></div>
+            );
+          })()
         )}
       </div>
     </div>

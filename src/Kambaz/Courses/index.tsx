@@ -2,11 +2,12 @@ import CourseNavigation from "./Navigation";
 import Modules from "./Modules";
 import Home from "./Home";
 import Assignments from "./Assignments";
-import Quizzes from "./Quizzes";
+// import Quizzes from "./Quizzes";
 import AssignmentEditor from "./Assignments/Editor";
 import { Navigate, Route, Routes, useParams, useLocation } from "react-router";
 import { FaAlignJustify } from "react-icons/fa6";
-import PeopleTable from "./People/Table";
+// import PeopleTable from "./People/Table";
+import CoursePeople from "./People/EnrolledUsers";
 
 import QuizEditor from "./Quizzes/Editor.tsx";
 import QuizReview from "./Quizzes/QuizPreview/QuizReview";
@@ -50,7 +51,7 @@ export default function Courses({ courses }: { courses: any[]; }) {
                             <Route path=":qid/preview/submitted" element={<QuizSubmission />} />
                             <Route path=":qid/preview/review" element={<QuizReview />} />
                         </Route>
-                        <Route path="People" element={<PeopleTable />} />
+                        <Route path="People" element={<CoursePeople />} />
                     </Routes>
                 </div>
             </div>

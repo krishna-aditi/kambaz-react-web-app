@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import { QuizQuestionRootState, QuizQuestion } from '../QuizQuestions/questionTypes';
@@ -45,7 +45,8 @@ export default function QuizPreview() {
 
   // Add timer state
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
-  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
+  // const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null);
+  const [intervalId, setIntervalId] = useState<number | null>(null);
 
   const { currentUser } = useSelector((state: RootState) => state.accountReducer);
   const { submissions, status } = useSelector((state: RootState) => state.submissionsReducer);

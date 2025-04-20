@@ -4,12 +4,14 @@ import { Quiz } from "./types";
 const REMOTE_SERVER = import.meta.env.VITE_REMOTE_SERVER;
 const BASE_API = `${REMOTE_SERVER}/api`;
 
-const request = axios.create({
-  withCredentials: false,
-});
+// const request = axios.create({
+//   withCredentials: false,
+// });
+
+const axiosWithCredentials = axios.create({ withCredentials: true });
 
 export const createQuiz = async (courseId: string, quiz: Partial<Quiz>) => {
-  const response = await request.post(
+  const response = await axiosWithCredentials.post(
     `${BASE_API}/courses/${courseId}/quizzes`,
     quiz
   );
@@ -17,14 +19,14 @@ export const createQuiz = async (courseId: string, quiz: Partial<Quiz>) => {
 };
 
 export const findQuizzesForCourse = async (courseId: string) => {
-  const response = await request.get(
+  const response = await axiosWithCredentials.get(
     `${BASE_API}/courses/${courseId}/quizzes`
   );
   return response.data;
 };
 
 export const updateQuiz = async (quizId: string, quiz: Partial<Quiz>) => {
-  const response = await request.put(
+  const response = await axiosWithCredentials.put(
     `${BASE_API}/quizzes/${quizId}`,
     quiz
   );
@@ -32,14 +34,14 @@ export const updateQuiz = async (quizId: string, quiz: Partial<Quiz>) => {
 };
 
 export const deleteQuiz = async (quizId: string) => {
-  const response = await request.delete(
+  const response = await axiosWithCredentials.delete(
     `${BASE_API}/quizzes/${quizId}`
   );
   return response.data;
 };
 
 export const publishQuiz = async (quizId: string) => {
-  const response = await request.put(
+  const response = await axiosWithCredentials.put(
     `${BASE_API}/quizzes/${quizId}/publish`
   );
   console.log(response.data);
